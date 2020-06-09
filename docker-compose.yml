@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+
+    api:
+        depends_on:
+           - db
+        build: .
+        command: gunicorn --bind 0.0.0.0:5000 app:app
+        environment:
+            PROJECT_ENV: ${PROJECT_ENV}
+            SECRET_KEY: ${SECRET_KEY}
+            JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+            MONGO_USER: ${MONGO_USER}
+            MONGO_PASS: ${MONGO_PASS}
+            MONGO_DATABASE: ${MONGO_DATABASE}
+            MONGO_HOSTNAME: db
+        ports:
+            - "5000:5000"
+
+    db:
+        image: mongo
+        command: mongod --auth
+        environment:
+            MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS}
+            MONGO_DATA_DIR: /data/db
+            MONGO_LOG_DIR: /dev/null
+        volumes:
+            - mongodbdata:/data/db
+volumes:
+    mongodbdata:
