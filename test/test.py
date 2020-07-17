@@ -20,6 +20,8 @@ my_user = {
         "password": "12345678",
         "token": ""
     }
+from datetime import datetime, timedelta
+timedelta(minutes=3)
 
 
 class RandomUsersGenerator:
@@ -151,7 +153,7 @@ if __name__ == '__main__':
     print("Listo.")
 
     print("Registrando usuarios...")
-    for user in rug.generate_random_users(10000):
+    for user in rug.generate_random_users(200):
         print(f"Registrando {user['first_name']} {user['last_name']} {user['email']}...", end=" ")
         res = register_user(user)
         j = res.json()
